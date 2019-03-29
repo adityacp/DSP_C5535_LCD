@@ -45,10 +45,9 @@ void main() {
     USBSTK5515_init();
     USBSTK5515_I2C_init();
     LiquidCrystal_I2C(0x27, 16, 2, LCD_5x8DOTS);
-    clear();
-//    write_str_at_position("Hello IIT", 0, 0);
-//    write_str_at_position("I am aditya", 0, 1);
-//    setBacklight(TRUE);
+    write_str_at_position("Hello World", 0, 0);
+    write_str_at_position("I2C interface", 0, 1);
+    setBacklight(TRUE);
 }
 
 void LiquidCrystal_I2C(Uint8 lcd_Addr, Uint8 lcd_cols, Uint8 lcd_rows, Uint8 dotsize) {

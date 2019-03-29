@@ -14,14 +14,20 @@
  *                                                                          *
  * ------------------------------------------------------------------------ */
 
-//#define Uint32  unsigned long
-//#define Uint16  unsigned short
-//#define Uint8   unsigned char
-//#define Int32   int
-//#define Int16   short
-//#define Int8    char
+#define Uint32  unsigned long
+#define Uint16  unsigned short
+#define Uint8   unsigned char
+#define Int32   int
+#define Int16   short
+#define Int8    char
 
-#include "tistdtypes.h"
+#ifndef TRUE
+
+typedef int     Bool;
+#define TRUE        ((Bool) 1)
+#define FALSE       ((Bool) 0)
+
+#endif
 
 #define SW_BREAKPOINT      while(1);
 /* ------------------------------------------------------------------------ *
