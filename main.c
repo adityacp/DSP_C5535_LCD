@@ -69,32 +69,13 @@ void LiquidCrystal_I2C(Uint8 lcd_Addr, Uint8 lcd_cols, Uint8 lcd_rows, Uint8 dot
     }
 
 
-    // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
-    // according to datasheet, we need at least 40ms after power rises above 2.7V
-    // before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-    //Thread.Sleep(50);
-//    USBSTK5515_waitusec(50000);
-
     // Now we pull both RS and R/W low to begin commands
     expanderWrite(_backlightval); // reset expander and turn backlight off (Bit 8 =1)
-    USBSTK5515_waitusec(1000000);
 
 
     //put the LCD into 4 bit mode
     // this is according to the hitachi HD44780 datasheet
     // figure 24, pg 46
-
-    // we start in 8bit mode, try to set 4 bit mode
-    write4bits(0x03 << 4);
-    USBSTK5515_waitusec(8000);
-
-    // second try
-    write4bits(0x03 << 4);
-    USBSTK5515_waitusec(8000);
-
-    // third go!
-    write4bits(0x03 << 4);
-    USBSTK5515_waitusec(4000);
 
     // finally, set to 4-bit interface
     write4bits(0x02 << 4);
@@ -137,13 +118,11 @@ void write_str_at_position(char* value, Uint8 col, Uint8 row) {
 
 void clear() {
     command(LCD_CLEARDISPLAY);
-    USBSTK5515_waitusec(2000);
 }
 
 
 void home() {
     command(LCD_RETURNHOME);
-    USBSTK5515_waitusec(2000);
 }
 
 void noDisplay() {
@@ -174,74 +153,49 @@ void noCursor() {
     command((Uint8)(LCD_DISPLAYCONTROL | _displaycontrol));
 
 }
-/// <summary>
-/// Turns off the underline cursor
-/// </summary>
+
 void cursor() {
     _displaycontrol |= LCD_CURSORON;
     command((Uint8)(LCD_DISPLAYCONTROL | _displaycontrol));
 }
 
-/// <summary>
-/// Scroll display left without changing the RAM
-/// </summary>
 void scrollDisplayLeft() {
      command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVELEFT);
 }
-/// <summary>
-/// Scroll display right without changing the RAM
-/// </summary>
+
 void scrollDisplayRight()
 {
      command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVERIGHT);
 }
 
-/// <summary>
-///This is for text that flows Left to Right
-/// </summary>
 void leftToRight() {
     _displaymode |= LCD_ENTRYLEFT;
     command((Uint8)(LCD_ENTRYMODESET | _displaymode));
 }
 
-/// <summary>
-///This is for text that flows Right to Left
-/// </summary>
 void rightToLeft() {
     Uint8 entry = LCD_ENTRYLEFT;
     _displaymode &= (Uint8)~entry;
     command((Uint8)(LCD_ENTRYMODESET | _displaymode));
 }
 
-/// <summary>
-/// Turn off the (optional) backlight
-/// </summary>
 void noBacklight() {
     _backlightval = LCD_NOBACKLIGHT;
     expanderWrite(0);
 }
 
-/// <summary>
-/// Turn on the (optional) backlight
-/// </summary>
 void backlight()
 {
     _backlightval = LCD_BACKLIGHT;
     expanderWrite(0);
 }
 
-/// <summary>
-/// This will 'right justify' text from the cursor
-/// </summary>
 void autoscroll() {
     _displaymode |= LCD_ENTRYSHIFTINCREMENT;
     command((Uint8)(LCD_ENTRYMODESET | _displaymode));
 
 }
 
-/// <summary>
-/// This will 'left justify' text from the cursor
-/// </summary>
 void noAutoscroll() {
     Uint8 entry = LCD_ENTRYSHIFTINCREMENT;
     _displaymode &= (Uint8)~entry;
