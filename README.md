@@ -7,4 +7,6 @@
 - 16*4 LCD
 - Code Composer Studio V8
 
+__Note:- Adapted from Arduino based I2C interface for LCD__
+
 Tested with DSP C5535 kit but may also work with DSP C5515 kit
